@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-# 1. Matriz de inventario con al menos 5 artículos
 inventario = [
     {"Código Artículo": "A001", "Nombre": "Tornillos", "Stock Actual": 50, "Stock Mínimo Requerido": 100},
     {"Código Artículo": "A002", "Nombre": "Martillos", "Stock Actual": 10, "Stock Mínimo Requerido": 20},
@@ -11,10 +10,8 @@ inventario = [
     {"Código Artículo": "A006", "Nombre": "Llaves inglesas", "Stock Actual": 25, "Stock Mínimo Requerido": 25}
 ]
 
-# Convertir la lista de diccionarios a un DataFrame de Pandas para una mejor manipulación
 df_inventario = pd.DataFrame(inventario)
 
-# 2. Módulo (función) para determinar la cantidad exacta a pedir para un artículo
 def calcular_cantidad_a_pedir(stock_actual, stock_minimo_requerido):
     """
     Calcula la cantidad a pedir para un artículo.
@@ -31,7 +28,6 @@ def calcular_cantidad_a_pedir(stock_actual, stock_minimo_requerido):
     else:
         return 0
 
-# 3. Lógica de Negocio y Salida: Imprimir una lista de pedidos inicial
 print("-- Lista de Pedidos de Inventario Inicial ---")
 lista_pedidos_inicial = []
 
@@ -53,7 +49,6 @@ else:
 
 print("---------------------------------------------")
 
-# Función para consultar el stock de un artículo
 def consultar_stock(nombre_articulo):
     item = df_inventario[df_inventario['Nombre'].str.lower() == nombre_articulo.lower()]
     if not item.empty:
@@ -69,13 +64,11 @@ def consultar_stock(nombre_articulo):
     else:
         print(f"\nArtículo '{nombre_articulo}' no encontrado en el inventario.")
 
-# Función para realizar un pedido (simulación: actualiza el Stock Actual)
 def realizar_pedido(nombre_articulo, cantidad_pedida):
-    global df_inventario # Para modificar el DataFrame globalmente
+    global df_inventario
     
     idx = df_inventario[df_inventario['Nombre'].str.lower() == nombre_articulo.lower()].index
     if not idx.empty:
-        # Convertir cantidad_pedida a entero, ya que input() devuelve string
         try:
             cantidad_pedida = int(cantidad_pedida)
             if cantidad_pedida < 0:
@@ -89,7 +82,6 @@ def realizar_pedido(nombre_articulo, cantidad_pedida):
         print(f"\nSe han añadido {cantidad_pedida} unidades de '{df_inventario.loc[idx, 'Nombre'].values[0]}'.")
         print(f"Nuevo Stock Actual: {df_inventario.loc[idx, 'Stock Actual'].values[0]}")
         
-        # Re-evaluar si el artículo sigue necesitando ser reabastecido
         stock_actual = df_inventario.loc[idx, 'Stock Actual'].values[0]
         stock_minimo = df_inventario.loc[idx, 'Stock Mínimo Requerido'].values[0]
         cantidad_sugerida = calcular_cantidad_a_pedir(stock_actual, stock_minimo)
@@ -101,7 +93,6 @@ def realizar_pedido(nombre_articulo, cantidad_pedida):
     else:
         print(f"\nArtículo '{nombre_articulo}' no encontrado en el inventario.")
 
-# Interfaz interactiva simple
 while True:
     print("\n--- Menú de Inventario ---")
     print("1. Consultar stock de un artículo")
